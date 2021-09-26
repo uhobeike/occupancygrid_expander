@@ -11,7 +11,12 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   roscpp
   std_msgs
+  grid_map_ros
+  grid_map_core
+  grid_map_msgs
 )
+
+find_package(Eigen3 QUIET)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -103,16 +108,27 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+   INCLUDE_DIRS 
+    include
+    ${EIGEN3_INCLUDE_DIR}
 #  LIBRARIES occupancygrid_expander
-#  CATKIN_DEPENDS nav_msgs roscpp std_msgs
+   CATKIN_DEPENDS 
+    nav_msgs 
+    roscpp 
+    std_msgs
+    grid_map_ros
+    grid_map_core
+    grid_map_msgs
 #  DEPENDS system_lib
 )
-
 ###########
 ## Build ##
 ###########
-include_directories(${catkin_INCLUDE_DIRS})
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIR}
+)
 
 add_executable(occupancygrid_expander_node
   src/occupancygrid_expander_node.cpp
