@@ -8,6 +8,7 @@
 
 int width =         1000;
 int height =        1000;
+int8_t value =      -1;
 float resolution =  0.1;
 std::string frame_id = "odom";
 
@@ -32,7 +33,7 @@ void mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
   new_map.info.origin.position.z = 0.0;
   new_map.info.origin.orientation.z = 0.0;
   new_map.info.origin.orientation.w = 1.0;
-  new_map.data.assign(width * height, -1);
+  new_map.data.assign(width * height, value);
 
   double h = height*resolution*0.5 - msg->info.height*resolution*0.5;
 
