@@ -6,11 +6,11 @@
 #include <grid_map_ros/GridMapRosConverter.hpp>
 #include <grid_map_ros/GridMapMsgHelpers.hpp>
 
-int width =         1000;
-int height =        1000;
-int8_t value =      -1;
-float resolution =  0.1;
-std::string frame_id = "odom";
+int width;
+int height;
+int value;
+double resolution;
+std::string frame_id;
 
 ros::Publisher map_pub;
 
@@ -19,9 +19,6 @@ double position_y;
 
 void mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg)
 {
-  std_msgs::Header header = msg->header;
-  nav_msgs::MapMetaData info = msg->info;
-
   nav_msgs::OccupancyGrid new_map;
 
   new_map.header.frame_id = frame_id;
@@ -67,15 +64,27 @@ void gridCallback(const grid_map_msgs::GridMap::ConstPtr& msg)
   position_y = position.y();
 }
 
+void rosparam_set(ros::NodeHandle& pnh)
+{
+  pnh.param("map_width", width, 1500);
+  pnh.param("map_height", height, 1000);
+  pnh.param("map_value", value, -1);
+  pnh.param("map_resolution", resolution, 0.1);
+  pnh.param("map_frame_id", frame_id, static_cast<std::string>("odom"));
+}
+
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "occupancygrid_expander_node");
-  ros::NodeHandle n;
+  ros::NodeHandle nh;
+  ros::NodeHandle pnh("~");
 
-  map_pub = n.advertise<nav_msgs::OccupancyGrid>("occupancygrid_expander_map",10);
+  rosparam_set(pnh);
+
+  map_pub = nh.advertise<nav_msgs::OccupancyGrid>("occupancygrid_expander_map",10);
  
-  ros::Subscriber map_sub = n.subscribe("/traversability_map_visualization/step_map",1 , mapCallback);
-  ros::Subscriber grid_sub = n.subscribe("/elevation_mapping/elevation_map",1 , gridCallback);
+  ros::Subscriber map_sub = nh.subscribe("/traversability_map_visualization/step_map",1 , mapCallback);
+  ros::Subscriber grid_sub = nh.subscribe("/elevation_mapping/elevation_map",1 , gridCallback);
   
   ros::spin();
   return 0;
