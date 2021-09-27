@@ -1,18 +1,22 @@
 <launch>
   <!-- Arguments -->
-  <arg name="map_width"     	default="1500"/>
-  <arg name="map_height"			default="1000"/>
-  <arg name="map_value" 			default="-1"/>
-  <arg name="map_resolution"	default="0.1"/>
-  <arg name="map_frame_id" 		default="odom"/>
+  <arg name="map_width"     	          default="1500"/>
+  <arg name="map_height"			          default="1000"/>
+  <arg name="map_value" 			          default="-1"/>
+  <arg name="map_resolution"	          default="0.1"/>
+  <arg name="map_frame_id" 		          default="odom"/>
+  <arg name="base_occupancy_map_name" 	default="/traversability_map_visualization/step_map"/>
+  <arg name="base_grid_map_name" 	      default="/elevation_mapping/elevation_map"/>
 
 	<!-- launch node -->
   <node pkg="occupancygrid_expander" type="occupancygrid_expander_node" name="occupancygrid_expander_node" output="screen" clear_params="true">
-		<param name="map_width"				value="$(arg map_width)"/>
-    <param name="map_height"      value="$(arg map_height)"/>
-    <param name="map_value"       value="$(arg map_value)"/>
-    <param name="map_resolution"  value="$(arg map_resolution)"/>
-    <param name="map_frame_id"    value="$(arg map_frame_id)"/>
+		<param name="map_width"				          value="$(arg map_width)"/>
+    <param name="map_height"                value="$(arg map_height)"/>
+    <param name="map_value"                 value="$(arg map_value)"/>
+    <param name="map_resolution"            value="$(arg map_resolution)"/>
+    <param name="map_frame_id"              value="$(arg map_frame_id)"/>
+    <param name="base_occupancy_map_name"   value="$(arg base_occupancy_map_name)"/>
+    <param name="base_grid_map_name"        value="$(arg base_grid_map_name)"/>
 	</node>
 
 </launch>
