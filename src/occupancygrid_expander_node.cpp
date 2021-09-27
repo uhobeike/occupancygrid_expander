@@ -11,6 +11,8 @@ int height;
 int value;
 double resolution;
 std::string frame_id;
+std::string base_occupancy_map;
+std::string base_grid_map;
 
 ros::Publisher map_pub;
 
@@ -71,6 +73,8 @@ void rosparam_set(ros::NodeHandle& pnh)
   pnh.param("map_value", value, -1);
   pnh.param("map_resolution", resolution, 0.1);
   pnh.param("map_frame_id", frame_id, static_cast<std::string>("odom"));
+  pnh.param("base_occupancy_map_name", base_occupancy_map, static_cast<std::string>("/traversability_map_visualization/step_map"));
+  pnh.param("base_grid_map_name", base_grid_map, static_cast<std::string>("/elevation_mapping/elevation_map"));
 }
 
 int main(int argc, char **argv)
@@ -83,8 +87,8 @@ int main(int argc, char **argv)
 
   map_pub = nh.advertise<nav_msgs::OccupancyGrid>("occupancygrid_expander_map",10);
  
-  ros::Subscriber map_sub = nh.subscribe("/traversability_map_visualization/step_map",1 , mapCallback);
-  ros::Subscriber grid_sub = nh.subscribe("/elevation_mapping/elevation_map",1 , gridCallback);
+  ros::Subscriber map_sub = nh.subscribe(base_occupancy_map, 1 , mapCallback);
+  ros::Subscriber grid_sub = nh.subscribe(base_grid_map, 1 , gridCallback);
   
   ros::spin();
   return 0;
