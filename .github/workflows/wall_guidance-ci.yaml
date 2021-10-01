@@ -18,10 +18,10 @@ jobs:
           bash step1.bash
           cd ..
           rm -rf ros_setup_scripts_Ubuntu18.04_desktop
+          source /opt/ros/melodic/setup.bash
           rosdep update
           rosdep install -r -y -i --from-paths --rosdistro melodic --ignore-src ./
           sudo apt install bear
-          source /opt/ros/melodic/setup.bash
           cmake . -B build -DBUILD_SHARED_LIBS=ON \
                            -DBOUT_ENABLE_OPENMP=ON \
                            -DBOUT_USE_PETSC=ON \

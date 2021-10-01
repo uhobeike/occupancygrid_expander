@@ -109,7 +109,6 @@ find_package(Eigen3 QUIET)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS 
-    include
     ${EIGEN3_INCLUDE_DIR}
 #  LIBRARIES occupancygrid_expander
    CATKIN_DEPENDS 
