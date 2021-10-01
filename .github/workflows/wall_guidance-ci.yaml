@@ -18,6 +18,7 @@ jobs:
           bash step1.bash
           cd ..
           rm -rf ros_setup_scripts_Ubuntu18.04_desktop
+          rosdep update
           rosdep install -r -y --from-paths --ignore-src ./
           sudo apt install bear
           source /opt/ros/melodic/setup.bash
