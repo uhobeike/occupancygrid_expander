@@ -18,9 +18,10 @@ jobs:
           bash step1.bash
           cd ..
           rm -rf ros_setup_scripts_Ubuntu18.04_desktop
-          rosdep install -r -y --from-paths --ignore-src ./
-          sudo apt install bear
           source /opt/ros/melodic/setup.bash
+          rosdep update
+          rosdep install -r -y -i --from-paths --rosdistro melodic --ignore-src ./
+          sudo apt install bear
           cmake . -B build -DBUILD_SHARED_LIBS=ON \
                            -DBOUT_ENABLE_OPENMP=ON \
                            -DBOUT_USE_PETSC=ON \
@@ -31,10 +32,11 @@ jobs:
                            -DBOUT_BUILD_DOCS=OFF \
                            -DCMAKE_EXPORT_COMPILE_COMMANDS=On
 
-      - uses:  uhobeike/ros-melodic-clang-tidy-review@v1.5
+      - uses:  uhobeike/ros-melodic-clang-tidy-review@v1.7
         id: review
         with:
           build_dir: build
+          rosdep_install: True
           max_comments: 100
           clang_tidy_checks: '-*,performance-*,readability-*,bugprone-*,clang-analyzer-*,cppcoreguidelines-*,mpi-*,misc-*,-readability-implicit-bool-conversion,-readability-qualified-auto,-cppcoreguidelines-owning-memory,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-readability-static-accessed-through-instance,-cppcoreguidelines-pro-type-static-cast-downcast,-bugprone-suspicious-enum-usage,-readability-uppercase-literal-suffix,-cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-misc-no-recursion,-readability-isolate-declaration,-cppcoreguidelines-pro-type-vararg,-misc-non-private-member-variables-in-classes,-performance-no-automatic-move,-readability-avoid-const-params-in-decls,-cppcoreguidelines-non-private-member-variables-in-classes'
       - name: Passed C++ style guide checks
